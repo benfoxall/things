@@ -10,8 +10,38 @@
     <p>
       The LED will go on and off, and on and off again, then back on, and off again (and on again after that).
     </p>
+    
+    <p>
+      <label>
+        delay (ms)
+        <input id="delay-value" type="number" value="500" />
+      </label>
+    </p>
 
-    <button>Send</button>
+    <button id="puck">Send to Puck</button>
+
+    <script type="module">
+      import {Puck} from './lib/puck.js'
+
+
+      const script = (delay) => 
+        `
+        reset();
+
+        var  on = false;
+        setInterval(function() {
+          on = !on;
+          LED1.write(on);
+        }, ${delay});
+        `
+    
+
+      document.querySelector('button').addEventListener('click', () => {
+        const delay = document.querySelector('#delay-value').valueAsNumber;
+
+        Puck.write(script(delay))
+      })
+    </script>
 
   </body>
 </html>
