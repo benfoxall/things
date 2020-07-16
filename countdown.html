@@ -14,12 +14,126 @@
     <p>
       <label>
         How many seconds?
-        <input type="number">
+        <input type="number" id="delay-value" value="5">
       </label>
     </p>
+
+    <button id="puck">Send to Puck</button>
+
+    <button id="microbit">Send to Microbit</button>
+
+    <script type="module">
+      import {Puck} from './lib/puck.js'
+
+      console.log(Puck)
+
+      const script = (delay) => 
+        `
+        reset();
+        echo(0);
+
+        setTimeout(() => {LED3.write(1)}, 100);
+        setTimeout(() => {LED3.write(0)}, 1000);
+
+        const seconds = ${delay};
+
+        let t = 0;
+
+        function countdown(n) {
+          clearTimeout(t);
+
+          LED1.write(0);
+          LED2.write(1);
+          
+          if(n === 0) {
+            LED1.write(1);
+            LED2.write(0);
+            
+            t = setTimeout(() => {
+              LED1.write(0);
+            }, 1000)
+            
+            return;
+          }
+          
+          t = setTimeout(() => {
+            LED2.write(0);
+            t = setTimeout(() => {
+              countdown(n - 1);
+            }, 900)
+          }, 100)
+          
+        }
+
+        setWatch(
+          () => countdown(seconds),
+          BTN1,
+          {repeat:true, edge:"rising"}
+        );
+
+        `
     
 
-    <button></button>
+      document.querySelector('#puck').addEventListener('click', () => {
+        const delay = document.querySelector('#delay-value').valueAsNumber;
+
+        Puck.write(script(delay))
+      })
+
+
+
+      const MBscript = (delay) => 
+        `
+        reset();
+        echo(0);
+
+        setTimeout(() => {show(0b1111100000111110000011111), 100);
+        setTimeout(() => {show(0)}, 1000);
+
+        const seconds = ${delay};
+
+        let t = 0;
+
+        function countdown(n) {
+          clearTimeout(t);
+
+          show(0b1111100000111110000011111);
+          
+          if(n === 0) {
+            show(0b1111111111111111111111111);
+            
+            t = setTimeout(() => {
+              show(0);
+            }, 1000)
+            
+            return;
+          }
+          
+          t = setTimeout(() => {
+            show(0);
+            t = setTimeout(() => {
+              countdown(n - 1);
+            }, 900)
+          }, 100)
+          
+        }
+
+        setWatch(
+          () => countdown(seconds),
+          BTN1,
+          {repeat:true, edge:"rising"}
+        );
+        
+
+        `
+    
+
+      document.querySelector('#microbit').addEventListener('click', () => {
+        const delay = document.querySelector('#delay-value').valueAsNumber;
+
+        Puck.write(MBscript(delay))
+      })
+    </script>
 
   </body>
 </html>

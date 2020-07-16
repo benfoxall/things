@@ -1,9 +1,15 @@
 body {
-  background: #ccc;
-  font-family: sans-serif;
-  font-size: 1.5em;
+  /* background: #fff; */
+  /* font-family: 'Cutive Mono',  */
+  /* font-family: 'Share Tech Mono',sans-serif; */
+  /* font-size: 1.5em; */
+}
+
+h1, h2, h3 {
+  /* color: #f0c; */
+  /* font-size: 1em; */
 }
 
 a {
-  color: #f00;
+  /* color: #fc0; */
 }

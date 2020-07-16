@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <h1>Things</h1>
+    <h1><a href="./">Things</a></h1>
 
     <h2>Blink</h2>
 
@@ -20,9 +20,12 @@
 
     <button id="puck">Send to Puck</button>
 
+    <button id="microbit">Send to Microbit</button>
+
     <script type="module">
       import {Puck} from './lib/puck.js'
 
+      console.log(Puck)
 
       const script = (delay) => 
         `
@@ -36,10 +39,30 @@
         `
     
 
-      document.querySelector('button').addEventListener('click', () => {
+      document.querySelector('#puck').addEventListener('click', () => {
         const delay = document.querySelector('#delay-value').valueAsNumber;
 
         Puck.write(script(delay))
+      })
+
+
+
+      const MBscript = (delay) => 
+        `
+        reset();
+
+        var  on = false;
+        setInterval(function() {
+          on = !on;
+          show(on ? 0x1FFFFFF : 0);
+        }, ${delay});
+        `
+    
+
+      document.querySelector('#microbit').addEventListener('click', () => {
+        const delay = document.querySelector('#delay-value').valueAsNumber;
+
+        Puck.write(MBscript(delay))
       })
     </script>
 

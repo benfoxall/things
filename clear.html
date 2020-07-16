@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1><a href="./">Things</a></h1>
+
+    <h2>Clear</h2>
+
+    <p>Get your thing ready</p>
+
+    <button id="puck">Send</button>
+
+    <script type="module">
+      import {Puck} from './lib/puck.js'
+
+      console.log(Puck)
+
+
+      const script = (delay) => 
+        `
+        reset();
+        `
+    
+
+      document.querySelector('button').addEventListener('click', () => {
+
+        Puck.write(script())
+      })
+
+
+    </script>
+
+  </body>
+</html>
